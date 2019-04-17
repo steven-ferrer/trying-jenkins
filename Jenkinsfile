@@ -1,13 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                sh 'echo "Hello Jenkins!"'
-                sh '''
-                    echo "Multiline shell steps work too"
-                    ls -lash
-                '''
+                retry(3) {
+                    sh './flakey-deploy.sh'
+                }
+
+                timeout(time: 3, unit: 'MINUTES') {
+                    sh './health-check.sh'
+                }
             }
         }
     }
