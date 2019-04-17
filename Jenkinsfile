@@ -1,9 +1,13 @@
 pipeline {
-    agent { docker { image 'golang' } }
+    agent any
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                sh 'go version'
+                sh 'echo "Hello Jenkins!"'
+                sh '''
+                    echo "Multiline shell steps work too"
+                    ls -lash
+                '''
             }
         }
     }
