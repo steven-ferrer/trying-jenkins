@@ -6,6 +6,10 @@ pipeline {
         DB_ENGINE = 'sqlite'
     }
 
+    options {
+        skipStagesAfterUnstable()
+    }
+
     stages {
         stage('No-op') {
             steps {
@@ -15,13 +19,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew build'
+                echo 'Building...'
             }
         }
 
         stage('Test') {
             steps {
-                sh './gradlew check'
+                echo 'Testing...'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
             }
         }
     }
@@ -36,9 +46,9 @@ pipeline {
         }
         failure {
             echo 'I failed :('
-            mail to: 'steven.r.ferrer@gmail.com',
-                    subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-                    body: "Something is wrong with ${env.BUILD_URL}"
+           //  mail to: 'steven.r.ferrer@gmail.com',
+           //         subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+           //         body: "Something is wrong with ${env.BUILD_URL}"
         }
         unstable {
             echo 'I am unstable :/'
