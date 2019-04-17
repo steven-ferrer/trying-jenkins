@@ -9,19 +9,21 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'printenv'
+                sh './gradlew build'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'echo "Fail!"; exit 1'
+                sh './gradlew check'
             }
         }
     }
     post {
         always {
             echo 'This will always run'
+            archiveArtifacts artifacts: 'build/libs/**/*.jar', fingerprint: true
+            junit 'build/reports/**/*.xml'
         }
         success {
             echo 'This will run only if successful'
