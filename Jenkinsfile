@@ -1,8 +1,10 @@
 pipeline {
     agent any
     stages {
-        step('Test') {
-            sh 'echo "Fail!"; exit 1'
+        stages('Test') {
+            steps {
+                sh 'echo "Fail!"; exit 1'
+            }
         }
     }
     post {
